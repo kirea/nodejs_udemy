@@ -1,7 +1,13 @@
-const http = require('http');
-const fs = require('fs')
-const routes = require('./routes')
+const express = require('express')
 
-const server = http.createServer(routes);
+const app = express();
 
-server.listen(3000);
+app.use((req, res, next) => {
+    next();
+})
+
+app.use((req, res, next) => {
+    res.send('<h1>As i have discovered you, so you must absorb one another.</h1>')
+})
+
+app.listen(3000);
