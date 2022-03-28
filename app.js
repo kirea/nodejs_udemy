@@ -2,27 +2,27 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const errorController = require('./controllers/error');
-const sequelize = require('./util/database');
+//const errorController = require('./controllers/error');
+const mongoConnect = require('./util/mongo');
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+//const adminRoutes = require('./routes/admin');
+//const shopRoutes = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+//app.use('/admin', adminRoutes);
+//app.use(shopRoutes);
+//
+//app.use(errorController.get404);
 
-app.use(errorController.get404);
-
-sequelize.sync().then(() => {
+mongoConnect((client) => {
+  const db = client.db('node-complete');
+  console.log('>>>>>>>>>> MONGO', db); // eslint-disable-line no-console
   app.listen(3000);
-}).catch(err => {
-  console.log(err);
-});
+})
